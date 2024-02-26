@@ -1,5 +1,3 @@
-package com.samadaan.demo;
-
 import java.util.HashMap;
 import java.util.Map;
 
@@ -26,7 +24,7 @@ public class Trie {
         public boolean endOfWord;
 
         public TrieNode(){
-            children=new HashMap<>();
+            children=new HashMap();
             endOfWord=false;
         }
     }
