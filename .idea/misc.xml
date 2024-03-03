@@ -5,6 +5,7 @@
       <list>
         <option value="$PROJECT_DIR$/BinarySearch/pom.xml" />
         <option value="$PROJECT_DIR$/Trie/pom.xml" />
+        <option value="$PROJECT_DIR$/Sorting/pom.xml" />
       </list>
     </option>
   </component>

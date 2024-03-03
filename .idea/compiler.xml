@@ -8,10 +8,12 @@
         <outputRelativeToContentRoot value="true" />
         <module name="BinarySearch" />
         <module name="Trie" />
+        <module name="Sorting" />
       </profile>
     </annotationProcessing>
     <bytecodeTargetLevel>
       <module name="BinarySearch" target="1.5" />
+      <module name="Sorting" target="11" />
       <module name="Trie" target="1.5" />
     </bytecodeTargetLevel>
   </component>

@@ -1,2 +1,5 @@
-package PACKAGE_NAME;public class MergeSortOfLinkedList {
+public class MergeSortOfLinkedList {
+    public static void main(String[] args) {
+
+    }
 }
