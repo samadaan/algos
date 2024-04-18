@@ -8,11 +8,12 @@ class Solution {
             arr[i]=cuts[i-1];
         }
         Arrays.sort(arr);
-        int[][] dp=new int[arr.length][arr.length];
-        for(int[] d:dp){
-            Arrays.fill(d, -1);
-        }
-        return memoization(1, arr.length-2, dp);
+        // int[][] dp=new int[arr.length][arr.length];
+        // for(int[] d:dp){
+        //     Arrays.fill(d, -1);
+        // }
+        // return memoization(1, arr.length-2, dp);
+        return tabulation();
 
 
 
@@ -37,5 +38,20 @@ class Solution {
             min=Math.min(min, arr[j+1]-arr[i-1]+memoization(i, k-1, dp)+memoization(k+1, j, dp));
         }
         return dp[i][j] = min;
+    }
+
+    public int tabulation(){
+        int[][] dp=new int[arr.length][arr.length];
+        for(int i=arr.length-1;i>=1;i--){
+            for(int j=i;j<arr.length-1;j++){
+                int min=(int)1e9;
+                for(int k=i;k<=j;k++){
+                    min=Math.min(min, arr[j+1]-arr[i-1]+dp[i][k-1]+dp[k+1][j]);
+                }
+                dp[i][j]=min;
+            }
+        }
+        return dp[1][arr.length-2];
+
     }
 }
