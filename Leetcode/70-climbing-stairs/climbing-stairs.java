@@ -4,8 +4,9 @@ class Solution {
         if(n==1)return 1;
         int prev0=1;
         int prev1=1;
+        int temp=0;
         for(int i=2;i<=n;i++){
-            int temp=prev0+prev1;
+            temp=prev0+prev1;
             prev0=prev1;
             prev1=temp;
         }
