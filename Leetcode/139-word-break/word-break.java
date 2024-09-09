@@ -3,9 +3,10 @@ class Solution {
     public boolean wordBreak(String s, List<String> wordDict) {
         words=new HashSet<>(wordDict);
         //return recurse(0, words, s);
-        int[] dp=new int[s.length()];
-        Arrays.fill(dp,-1);
-        return memoization(dp, 0, words, s);
+        // int[] dp=new int[s.length()];
+        // Arrays.fill(dp,-1);
+        // return memoization(dp, 0, words, s);
+        return tabulate(words, s);
         
     }
     public boolean recurse(int currIndex, Set<String> words, String s){
@@ -31,5 +32,20 @@ class Solution {
         }
         dp[currIndex]=0;
         return false;
+    }
+
+    public boolean tabulate(Set<String> words, String s){
+        int n=s.length();
+        boolean[] dp=new boolean[s.length()+1];
+        dp[n]=true;
+        for(int i=n-1;i>=0;i--){
+            for(int j=i+1;j<=n;j++){
+                if(words.contains(s.substring(i,j)) && dp[j]){
+                    dp[i]=true;
+                    break;
+                }
+            }
+        }
+        return dp[0];
     }
 }
