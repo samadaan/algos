@@ -14,23 +14,44 @@
  * }
  */
 class Solution {
-    TreeNode head=null;
+    TreeNode head=new TreeNode(-1);
     TreeNode ans=head;
     public TreeNode increasingBST(TreeNode root) {
         traverse(root);
-        return head;
+        return head.right;
         
     }
     public void traverse(TreeNode root){
         if(root==null)return;
         traverse(root.left);
-        if(ans==null){
-            ans=new TreeNode(root.val);
-            head=ans;
-        }else{
-            ans.right=new TreeNode(root.val);
-            ans=ans.right;
-        }
+        root.left=null;
+        ans.right=root;
+        ans=ans.right;
         traverse(root.right);
     }
+    // public void traverse(TreeNode curr){
+    //     if(curr==null)return;
+    //     traverse(curr.left);
+    //     traverse(curr.right);
+    //     TreeNode leftMax=max(curr.left);
+    //     TreeNode rightMin=min(curr.right);
+    //     if(leftMax!=null)leftMax.right=curr;
+    //     curr.right=rightMin;
+        
+      
+    // }
+    // public TreeNode max(TreeNode curr){
+    //     if(curr==null)return null;
+    //     if(curr.right!=null){
+    //         max(curr.right);
+    //     }
+    //     return curr;
+    // }
+    // public TreeNode min(TreeNode curr){
+    //     if(curr==null)return null;
+    //     if(curr.left!=null){
+    //         min(curr.left);
+    //     }
+    //     return curr;
+    // }
 }
