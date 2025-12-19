@@ -35,7 +35,7 @@ class Solution {
                     TreeNode currNode=new TreeNode(curr);
                     currNode.left=leftNode;
                     currNode.right=rightNode;
-                    ans.add(clone(currNode));
+                    ans.add(currNode);
                 }
             }
         }
