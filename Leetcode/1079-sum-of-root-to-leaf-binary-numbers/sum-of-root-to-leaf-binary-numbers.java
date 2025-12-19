@@ -14,21 +14,23 @@
  * }
  */
 class Solution {
-    int sum=0;
     public int sumRootToLeaf(TreeNode root) {
-        traverse(root, "");
-        return sum;
+        return dfs(root, 0);
         
     }
-    public void traverse(TreeNode curr, String currString){
-        if(curr==null)return;
-        if(curr.left==null && curr.right==null){
-            currString+=curr.val;
-            sum+=Integer.parseInt(currString, 2);
-            return;
+    private int dfs(TreeNode node, int currentSum) {
+        if (node == null) return 0;
+
+        // Shift left and add the current node's value
+        // This is equivalent to: currentSum = (currentSum << 1) | node.val;
+        currentSum = currentSum * 2 + node.val;
+
+        // If it's a leaf node, return the accumulated path value
+        if (node.left == null && node.right == null) {
+            return currentSum;
         }
-        currString+=curr.val;
-        traverse(curr.left, currString);
-        traverse(curr.right, currString);
+
+        // Otherwise, continue DFS on both children and sum their results
+        return dfs(node.left, currentSum) + dfs(node.right, currentSum);
     }
 }
