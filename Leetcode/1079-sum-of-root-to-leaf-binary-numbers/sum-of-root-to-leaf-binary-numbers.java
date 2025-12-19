@@ -23,7 +23,7 @@ class Solution {
 
         // Shift left and add the current node's value
         // This is equivalent to: currentSum = (currentSum << 1) | node.val;
-        currentSum = currentSum * 2 + node.val;
+        currentSum = (currentSum << 1) | node.val;
 
         // If it's a leaf node, return the accumulated path value
         if (node.left == null && node.right == null) {
