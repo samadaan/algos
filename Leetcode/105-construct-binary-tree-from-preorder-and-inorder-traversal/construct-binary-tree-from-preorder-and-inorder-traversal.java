@@ -17,17 +17,23 @@ class Solution {
     int[] pre;
     int[] in;
     int curr;
+    Map<Integer, Integer> inorderIndexMap;
     public TreeNode buildTree(int[] preorder, int[] inorder) {
         pre=preorder;
         in=inorder;
         curr=0;
+        inorderIndexMap = new HashMap<>();
+        // Fill the map with inorder values and their indices
+        for (int i = 0; i < inorder.length; i++) {
+            inorderIndexMap.put(inorder[i], i);
+        }
         return create(0, inorder.length-1);
     }
     TreeNode create(int left, int right){
-        // if(left>right)return null;
-        if(left==right) return new TreeNode(pre[curr++]);
+        if(left>right)return null;
+        // if(left==right) return new TreeNode(pre[curr++]);
 
-        int idx=find(left, right);
+        int idx=inorderIndexMap.get(pre[curr]);
         if(idx!=-1){
             TreeNode n=new TreeNode(pre[curr++]);
             n.left=create(left, idx-1);
