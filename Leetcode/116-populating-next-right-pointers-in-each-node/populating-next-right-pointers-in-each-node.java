@@ -1,0 +1,41 @@
+/*
+// Definition for a Node.
+class Node {
+    public int val;
+    public Node left;
+    public Node right;
+    public Node next;
+
+    public Node() {}
+    
+    public Node(int _val) {
+        val = _val;
+    }
+
+    public Node(int _val, Node _left, Node _right, Node _next) {
+        val = _val;
+        left = _left;
+        right = _right;
+        next = _next;
+    }
+};
+*/
+
+class Solution {
+    Map<Integer, Node> connectMap;
+    public Node connect(Node root) {
+        connectMap=new HashMap<>();
+        traverse(root, 0);
+        return root;
+    }
+    void traverse(Node curr, int depth){
+        if(curr==null)return;
+        if(connectMap.get(depth)!=null){
+            Node prev=connectMap.get(depth);
+            prev.next=curr;
+        }
+        connectMap.put(depth, curr);
+        traverse(curr.left, depth+1);
+        traverse(curr.right, depth+1);
+    }
+}
