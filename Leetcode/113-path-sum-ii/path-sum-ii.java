@@ -25,7 +25,7 @@ class Solution {
         list.add(curr.val);
         remSum-=curr.val;
         if(remSum==0 && curr.left==null && curr.right==null){
-            ans.add(clone(list));
+            ans.add(new ArrayList<>(list));
         }
         traverse(curr.left, list, remSum);
         traverse(curr.right, list, remSum);
