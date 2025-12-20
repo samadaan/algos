@@ -24,7 +24,8 @@ class Solution {
         return create(0, inorder.length-1);
     }
     TreeNode create(int left, int right){
-        if(left>right)return null;
+        // if(left>right)return null;
+        if(left==right) return new TreeNode(pre[curr++]);
 
         int idx=find(left, right);
         if(idx!=-1){
