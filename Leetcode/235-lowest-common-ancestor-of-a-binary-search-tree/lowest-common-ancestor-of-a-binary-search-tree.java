@@ -10,20 +10,16 @@
 
 class Solution {
     public TreeNode lowestCommonAncestor(TreeNode root, TreeNode p, TreeNode q) {
-        if (root == null)
-            return null;
-        if (root.val == p.val || root.val == q.val) {
-            return root;
-        }
-        if (root.val > p.val && root.val < q.val) {
-            return root;
-        }
-        if (root.val < p.val && root.val > q.val) {
-            return root;
-        }
-        if (root.val > p.val) {
+        // If both p and q are smaller than root, LCA must be in the left subtree
+        if (p.val < root.val && q.val < root.val) {
             return lowestCommonAncestor(root.left, p, q);
         }
-        return lowestCommonAncestor(root.right, p, q);
+        // If both p and q are larger than root, LCA must be in the right subtree
+        if (p.val > root.val && q.val > root.val) {
+            return lowestCommonAncestor(root.right, p, q);
+        }
+        // If one is smaller and one is larger (or one equals root), 
+        // this is the split point, hence the LCA.
+        return root;
     }
 }
