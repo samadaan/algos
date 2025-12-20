@@ -22,19 +22,21 @@ class Node {
 */
 
 class Solution {
-    Map<Integer, Node> connectMap;
+    List<Node> connectArr;
     public Node connect(Node root) {
-        connectMap=new HashMap<>();
+        connectArr=new ArrayList<>();
         traverse(root, 0);
         return root;
     }
     void traverse(Node curr, int depth){
         if(curr==null)return;
-        if(connectMap.get(depth)!=null){
-            Node prev=connectMap.get(depth);
+        if(depth==connectArr.size()){
+            connectArr.add(curr);
+        }else{
+            Node prev=connectArr.get(depth);
             prev.next=curr;
+            connectArr.set(depth, curr);
         }
-        connectMap.put(depth, curr);
         traverse(curr.left, depth+1);
         traverse(curr.right, depth+1);
     }
