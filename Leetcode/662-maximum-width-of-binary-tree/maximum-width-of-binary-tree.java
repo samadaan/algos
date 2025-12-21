@@ -32,13 +32,10 @@ class Solution {
         while (!queue.isEmpty()) {
             int size = queue.size();
             int start = 0, end = 0;
-            
-            // Normalize indices at each level to prevent integer overflow
-            int levelMin = queue.peek().index; 
 
             for (int i = 0; i < size; i++) {
                 Pair current = queue.poll();
-                int currentIndex = current.index - levelMin; // Optional: prevents overflow
+                int currentIndex = current.index;
                 TreeNode node = current.node;
 
                 if (i == 0) start = currentIndex;
