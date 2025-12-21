@@ -17,38 +17,42 @@
  */
 public class NestedIterator implements Iterator<Integer> {
 
-    List<Integer> arr;
-    int currIndex;
+    private Deque<NestedInteger> stack;
 
     public NestedIterator(List<NestedInteger> nestedList) {
-        arr = new ArrayList<>();
-        currIndex = 0;
-        push(nestedList);
+        stack = new ArrayDeque<>();
+        // Push elements in reverse to keep the first element on top
+        prepareStack(nestedList);
 
     }
 
     @Override
     public Integer next() {
-        return arr.get(currIndex++);
+        // hasNext() guarantees the top of the stack is an integer
+        return stack.pop().getInteger();
 
     }
 
     @Override
     public boolean hasNext() {
-        if (currIndex >= arr.size()) {
-            return false;
+        // Process the stack until the top element is an integer
+        while (!stack.isEmpty()) {
+            NestedInteger curr = stack.peek();
+            if (curr.isInteger()) {
+                return true;
+            }
+            
+            // If it's a list, unpack it
+            stack.pop();
+            prepareStack(curr.getList());
         }
-        return true;
+        return false;
 
     }
 
-    void push(List<NestedInteger> list) {
-        for (int i = 0; i < list.size(); i++) {
-            if (list.get(i).isInteger()) {
-                arr.add(list.get(i).getInteger());
-            } else {
-                push(list.get(i).getList());
-            }
+    private void prepareStack(List<NestedInteger> list) {
+        for (int i = list.size() - 1; i >= 0; i--) {
+            stack.push(list.get(i));
         }
     }
 }
