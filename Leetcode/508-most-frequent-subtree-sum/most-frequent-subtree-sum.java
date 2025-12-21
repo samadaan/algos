@@ -20,7 +20,7 @@ class Solution {
 
     public int[] findFrequentTreeSum(TreeNode root) {
         sumFreqMap = new HashMap<>();
-        int maxFreq = 0;
+        maxFreq = 0;
         ans = new ArrayList<>();
         sum(root);
         int[] a = new int[ans.size()];
