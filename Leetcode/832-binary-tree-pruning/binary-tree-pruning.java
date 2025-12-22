@@ -15,29 +15,23 @@
  */
 class Solution {
     public TreeNode pruneTree(TreeNode root) {
-        int val = traverse(root);
-        if (val == 0)
+        if (root == null)
             return null;
+
+        // 1. Prune the left and right subtrees first (Post-order)
+        root.left = pruneTree(root.left);
+        root.right = pruneTree(root.right);
+
+        // 2. Decide if the current node should be pruned:
+        // A node is pruned if its left and right subtrees are now null 
+        // AND its own value is 0.
+        if (root.val == 0 && root.left == null && root.right == null) {
+            return null;
+        }
+
+        // Otherwise, keep this node
         return root;
 
-    }
-
-    public int traverse(TreeNode root) {
-        if (root == null)
-            return 0;
-        int left = traverse(root.left);
-        int right = traverse(root.right);
-
-        if (left == 0) {
-            root.left = null;
-        }
-        if (right == 0) {
-            root.right = null;
-        }
-        if (left == 0 && right == 0) {
-            return root.val;
-        }
-        return 1;
     }
 
 }
