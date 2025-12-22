@@ -14,49 +14,36 @@
  * }
  */
 class Solution {
-    Map<TreeNode, TreeNode> parentMap;
-    Queue<TreeNode> deepestNodes;
-    int maxDepth;
-
-    public TreeNode subtreeWithAllDeepest(TreeNode root) {
-        parentMap = new HashMap<>();
-        deepestNodes = new LinkedList<>();
-        maxDepth = -1;
-        fill(root, 0, null);
-        if (deepestNodes.size() == 1) {
-            return deepestNodes.remove();
+    class Result {
+        TreeNode node;
+        int dist;
+        Result(TreeNode n, int d) {
+            node = n;
+            dist = d;
         }
-        while (!deepestNodes.isEmpty()) {
-            int size = deepestNodes.size();
-            Set<TreeNode> visitedNodes = new HashSet<>();
-            while (size-- > 0) {
-                TreeNode n = deepestNodes.remove();
-                TreeNode par = parentMap.get(n);
-                if (!visitedNodes.contains(par)) {
-                    visitedNodes.add(par);
-                    deepestNodes.add(par);
-                }
-            }
-            if (deepestNodes.size() == 1) {
-                return deepestNodes.remove();
-            }
-        }
-        return null;
-
     }
 
-    void fill(TreeNode curr, int depth, TreeNode par) {
-        if (curr == null)
-            return;
-        if (depth > maxDepth) {
-            maxDepth = depth;
-            deepestNodes.clear();
-            deepestNodes.add(curr);
-        } else if (depth == maxDepth) {
-            deepestNodes.add(curr);
+    public TreeNode subtreeWithAllDeepest(TreeNode root) {
+        return dfs(root).node;
+    }
+
+    private Result dfs(TreeNode node) {
+        if (node == null) return new Result(null, 0);
+
+        Result left = dfs(node.left);
+        Result right = dfs(node.right);
+
+        // If left is deeper, the answer is in the left branch
+        if (left.dist > right.dist) {
+            return new Result(left.node, left.dist + 1);
         }
-        parentMap.put(curr, par);
-        fill(curr.left, depth + 1, curr);
-        fill(curr.right, depth + 1, curr);
+        
+        // If right is deeper, the answer is in the right branch
+        if (right.dist > left.dist) {
+            return new Result(right.node, right.dist + 1);
+        }
+
+        // If they are equal, this current node is the candidate for the LCA
+        return new Result(node, left.dist + 1);
     }
 }
