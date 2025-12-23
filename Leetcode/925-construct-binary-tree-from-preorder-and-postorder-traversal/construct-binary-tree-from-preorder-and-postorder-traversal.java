@@ -34,11 +34,10 @@ class Solution {
         if (leftIndex == rightIndex)
             return new TreeNode(pre[curr++]);
         int val = pre[curr++];
-        int ind = postOrderIndexMap.get(val);
         TreeNode n = new TreeNode(val);
-        int ind1 = postOrderIndexMap.get(pre[curr]);
-        n.left = construct(leftIndex, ind1);
-        n.right = construct(ind1 + 1, ind - 1);
+        int leftChildIndex = postOrderIndexMap.get(pre[curr]);
+        n.left = construct(leftIndex, leftChildIndex);
+        n.right = construct(leftChildIndex + 1, rightIndex - 1);
         return n;
 
     }
