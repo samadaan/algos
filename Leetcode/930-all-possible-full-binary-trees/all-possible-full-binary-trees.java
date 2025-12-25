@@ -14,6 +14,9 @@
  * }
  */
 class Solution {
+
+    Map<Integer, List<TreeNode>> memo = new HashMap<>();
+
     public List<TreeNode> allPossibleFBT(int n) {
         List<TreeNode> ans = new ArrayList<>();
         if (n % 2 == 0)
@@ -24,7 +27,9 @@ class Solution {
             return ans;
         }
 
-        TreeNode root = new TreeNode(0);
+        if (memo.containsKey(n)) {
+            return memo.get(n);
+        }
 
         int remNodes = n - 1;
         int leftNodes = 1;
@@ -33,21 +38,18 @@ class Solution {
             List<TreeNode> left = allPossibleFBT(leftNodes);
             List<TreeNode> right = allPossibleFBT(remNodes - leftNodes);
             for (TreeNode l : left) {
-                root.left = l;
+
                 for (TreeNode r : right) {
+
+                    TreeNode root = new TreeNode(0);
+                    root.left = l;
                     root.right = r;
-                    ans.add(clone(root));
+                    ans.add(root);
                 }
             }
-            leftNodes+=2;
+            leftNodes += 2;
         }
-        return ans;
-    }
-
-    public TreeNode clone(TreeNode curr) {
-        TreeNode clonedNode = new TreeNode(0);
-        clonedNode.left = curr.left;
-        clonedNode.right = curr.right;
-        return clonedNode;
+        memo.put(n, ans);
+        return memo.get(n);
     }
 }
