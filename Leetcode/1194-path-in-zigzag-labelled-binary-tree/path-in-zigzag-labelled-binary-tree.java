@@ -1,5 +1,7 @@
 class Solution {
+    int[][] dp;
     public List<Integer> pathInZigZagTree(int label) {
+        dp=new int[label][2];
         List<Integer> ans = new ArrayList<>();
         while (label != 0) {
             ans.add(0, label);
@@ -40,6 +42,9 @@ class Solution {
         if (x == 2) {
             return new int[] { 2, 3 };
         }
-        return new int[] { 2 * getBounds(x - 1)[0], 2 * getBounds(x - 1)[1] + 1 };
+        if(dp[x][0]!=0 && dp[x][1]!=0){
+            return dp[x];
+        }
+        return dp[x] = new int[] { 2 * getBounds(x - 1)[0], 2 * getBounds(x - 1)[1] + 1 };
     }
 }
