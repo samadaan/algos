@@ -25,15 +25,12 @@ class Solution {
     private int traverse(TreeNode root) {
         if (root == null)
             return 0;
-        int left = traverse(root.left);
-        int right = traverse(root.right);
+        int left = Math.max(traverse(root.left), 0);
+        int right = Math.max(traverse(root.right), 0);
 
-        ans = Math.max(ans, root.val);
-        ans = Math.max(ans, left + root.val);
-        ans = Math.max(ans, right + root.val);
         ans = Math.max(ans, left + right + root.val);
 
-        return Math.max(root.val, Math.max(left + root.val, right + root.val));
+        return Math.max(left + root.val, right + root.val);
 
     }
 }
