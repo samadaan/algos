@@ -1,18 +1,16 @@
 class Solution {
     public int findCenter(int[][] edges) {
-        int n = edges.length + 1;
-        int[] arr = new int[n + 1];
-        for (int[] edge : edges) {
-            arr[edge[0]]++;
-            if (arr[edge[0]] == n - 1) {
-                return edge[0];
-            }
-            arr[edge[1]]++;
-            if (arr[edge[1]] == n - 1) {
-                return edge[1];
-            }
+        // Just compare the two nodes of the first edge 
+        // with the two nodes of the second edge.
+        int u1 = edges[0][0], v1 = edges[0][1];
+        int u2 = edges[1][0], v2 = edges[1][1];
+
+        // The center node must be present in both edges
+        if (u1 == u2 || u1 == v2) {
+            return u1;
+        } else {
+            return v1;
         }
-        return -1;
 
     }
 }
