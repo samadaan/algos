@@ -1,10 +1,12 @@
 class Solution {
-    Map<Integer, List<Integer>> adjMap;
-
+    List<Integer>[] adjList;
     public boolean canFinish(int numCourses, int[][] prerequisites) {
-        adjMap = new HashMap<>();
-        for (int[] pre : prerequisites) {
-            adjMap.computeIfAbsent(pre[0], k -> new ArrayList<>()).add(pre[1]);
+        adjList=new ArrayList[numCourses];
+        for(int i=0;i<numCourses;i++){
+            adjList[i]=new ArrayList<>();
+        }
+        for(int[] pre:prerequisites){
+            adjList[pre[0]].add(pre[1]);
         }
 
         int[] state=new int[numCourses];
@@ -21,7 +23,7 @@ class Solution {
         if(state[source]==1)return true;
         if(state[source]==2)return false;
         state[source]=1;
-        for (Integer x : adjMap.getOrDefault(source, new ArrayList<>())) {
+        for (Integer x : adjList[source]) {
             if (checkCycle(x, state)) {
                 return true;
             }
