@@ -6,7 +6,7 @@ class Solution {
         for(int i=0;i<numCourses;i++)adj[i]=new ArrayList<>();
 
         for(int[] pre: prerequisites){
-            adj[pre[0]].add(pre[1]);
+            adj[pre[1]].add(pre[0]);
         }
 
         int[] state=new int[numCourses];
@@ -18,9 +18,9 @@ class Solution {
         }
 
         int[] ans=new int[numCourses];
-        int i=numCourses-1;
+        int i=0;
         while(!stack.isEmpty()){
-            ans[i--]=stack.pop();
+            ans[i++]=stack.pop();
         }
         return ans;
         
