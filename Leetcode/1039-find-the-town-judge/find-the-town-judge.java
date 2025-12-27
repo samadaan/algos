@@ -9,7 +9,7 @@ class Solution {
         }
         for (int i = 1; i <= n; i++) {
             if (ans == -1 && degreeArr[i] == n - 1) {
-                return i;
+                ans=i;
             } else if (degreeArr[i] == n - 1) {
                 return -1;
             }
