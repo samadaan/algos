@@ -1,45 +1,40 @@
 class Solution {
     public int[] findOrder(int numCourses, int[][] prerequisites) {
-        Stack<Integer> stack=new Stack<>();
 
+        int[] indegree=new int[numCourses];
         List<Integer>[] adj=new ArrayList[numCourses];
-        for(int i=0;i<numCourses;i++)adj[i]=new ArrayList<>();
-
-        for(int[] pre: prerequisites){
-            adj[pre[1]].add(pre[0]);
-        }
-
-        int[] state=new int[numCourses];
 
         for(int i=0;i<numCourses;i++){
-            if(!topologicalDfs(i, adj, state, stack)){
-                return new int[0];
-            }
+            adj[i]=new ArrayList<>();
         }
 
+        for(int[] pre:prerequisites){
+            indegree[pre[0]]++;
+            adj[pre[1]].add(pre[0]);
+        }
         int[] ans=new int[numCourses];
-        int i=0;
-        while(!stack.isEmpty()){
-            ans[i++]=stack.pop();
+        int index=0;
+        Queue<Integer> queue=new LinkedList<>();
+
+        for(int i=0;i<numCourses;i++){
+            if(indegree[i]==0)queue.offer(i);
         }
-        return ans;
-        
-    }
-    private boolean topologicalDfs(int source, List<Integer>[] adj, int[] state, Stack<Integer> stack){
-        if(state[source]==1){
-            return false;
-        }
-        if(state[source]==2){
-            return true;
-        }
-        state[source]=1;
-        for(Integer node:adj[source]){
-            if(!topologicalDfs(node, adj, state, stack)){
-                return false;
+
+        while(!queue.isEmpty()){
+            Integer node=queue.remove();
+            ans[index++]=node;
+            for(Integer x:adj[node]){
+                indegree[x]--;
+                if(indegree[x]==0){
+                    queue.add(x);
+                }
             }
         }
-        state[source]=2;
-        stack.push(source);
-        return true;
+        if(index!=numCourses){
+            return new int[0];
+        }
+        return ans;
+
+        
     }
 }
