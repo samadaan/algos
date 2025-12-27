@@ -1,36 +1,20 @@
 class Solution {
-    
     public int findJudge(int n, int[][] trust) {
-        Map<Integer, List<Integer>> adjMap = new HashMap<>();
-
-        for(int[] x: trust){
-            List<Integer> adj = adjMap.getOrDefault(x[0], new ArrayList<>());
-            adj.add(x[1]);
-            adjMap.put(x[0], adj);
+        int[] degreeArr = new int[n + 1];
+        Arrays.fill(degreeArr, 0);
+        int ans = -1;
+        for (int[] x : trust) {
+            degreeArr[x[0]]--;
+            degreeArr[x[1]]++;
         }
-        int ans=1;
-        Set<Integer> noOutEdgeSet = new HashSet<>();
-        for(int i=1;i<=n;i++){
-            if(adjMap.get(i)==null){
-                noOutEdgeSet.add(i);
-            }
-        }
-        // System.out.println(noOutEdgeSet);
-        if(noOutEdgeSet.size()!=1){
-            return -1;
-        }
-        for(Map.Entry<Integer, List<Integer>> entry:adjMap.entrySet()){
-            boolean found=false;
-            for(Integer adj:entry.getValue()){
-                if(noOutEdgeSet.contains(adj)){
-                    ans=adj;
-                    found=true;
-                }
-            }
-            if(!found){
+        for (int i = 1; i <= n; i++) {
+            if (ans == -1 && degreeArr[i] == n - 1) {
+                ans = i;
+            } else if (degreeArr[i] == n - 1) {
                 return -1;
             }
         }
         return ans;
+
     }
 }
