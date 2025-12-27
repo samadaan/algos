@@ -1,37 +1,41 @@
 class Solution {
-    List<Integer>[] adjList;
-
     public boolean canFinish(int numCourses, int[][] prerequisites) {
-        adjList = new ArrayList[numCourses];
-        for (int i = 0; i < numCourses; i++) {
-            adjList[i] = new ArrayList<>();
-        }
+        int[] indegree = new int[numCourses];
+        List<Integer>[] adj = new ArrayList[numCourses];
+        for (int i = 0; i < numCourses; i++)
+            adj[i] = new ArrayList<>();
+
         for (int[] pre : prerequisites) {
-            adjList[pre[0]].add(pre[1]);
+            indegree[pre[1]]++;
+            adj[pre[0]].add(pre[1]);
         }
 
-        int[] state = new int[numCourses];
-        for (int i = 0; i < numCourses; i++) {
-            if (checkCycle(i, state)) {
-                return false;
+        Queue<Integer> queue = new LinkedList<>();
+        int num = 0;
+
+        for (int i=0;i<numCourses;i++) {
+            if (indegree[i] == 0) {
+                queue.offer(i);
             }
         }
-        return true;
 
-    }
+        
 
-    public boolean checkCycle(int source, int[] state) {
-        if (state[source] == 1)
-            return true;
-        if (state[source] == 2)
-            return false;
-        state[source] = 1;
-        for (Integer x : adjList[source]) {
-            if (checkCycle(x, state)) {
-                return true;
+        while (!queue.isEmpty()) {
+            int node = queue.poll();
+            num++;
+            for (int x : adj[node]) {
+                indegree[x]--;
+                if (indegree[x] == 0) {
+                    // System.out.println("x "+x);
+                    queue.offer(x);
+                }
             }
         }
-        state[source] = 2;
-        return false;
+
+        // System.out.println("num "+num);
+
+        return num == numCourses;
+
     }
 }
