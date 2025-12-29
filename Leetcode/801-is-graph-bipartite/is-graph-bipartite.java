@@ -16,7 +16,6 @@ class Solution {
 
         for (int i = 0; i < graph[source].length; i++) {
             int x = graph[source][i];
-            System.out.println("source " + source + " x " + x);
             if (redblack[x] == color) {
                 return true;
             }
