@@ -10,7 +10,8 @@ class Solution {
             }
             state[room] = 1;
             for (Integer adjKey : rooms.get(room)) {
-                queue.offer(adjKey);
+                if (state[adjKey] == 0)
+                    queue.offer(adjKey);
             }
         }
         for (int i = 0; i < state.length; i++) {
