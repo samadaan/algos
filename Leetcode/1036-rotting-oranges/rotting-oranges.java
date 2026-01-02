@@ -15,35 +15,27 @@ class Solution {
         if (freshCount == 0)
             return 0;
         int levels = 0;
+        int[][] dirs = { { 1, 0 }, { -1, 0 }, { 0, 1 }, { 0, -1 } };
         while (!queue.isEmpty()) {
             int size = queue.size();
+            boolean rottedThisTurn = false;
             while (size-- > 0) {
-                int[] c = queue.remove();
-                int x = c[0];
-                int y = c[1];
-                if (x > 0 && grid[x - 1][y] == 1) {
-                    grid[x - 1][y] = 2;
-                    freshCount--;
-                    queue.add(new int[] { x - 1, y });
-                }
-                if (x < n - 1 && grid[x + 1][y] == 1) {
-                    grid[x + 1][y] = 2;
-                    freshCount--;
-                    queue.add(new int[] { x + 1, y });
-                }
-                if (y > 0 && grid[x][y - 1] == 1) {
-                    grid[x][y - 1] = 2;
-                    freshCount--;
-                    queue.add(new int[] { x, y - 1 });
-                }
-                if (y < m - 1 && grid[x][y + 1] == 1) {
-                    grid[x][y + 1] = 2;
-                    freshCount--;
-                    queue.add(new int[] { x, y + 1 });
+                int[] curr = queue.poll();
+                for (int[] d : dirs) {
+                    int nx = curr[0] + d[0];
+                    int ny = curr[1] + d[1];
+
+                    if (nx >= 0 && nx < n && ny >= 0 && ny < m && grid[nx][ny] == 1) {
+                        grid[nx][ny] = 2;
+                        queue.add(new int[] { nx, ny });
+                        freshCount--;
+                        rottedThisTurn = true;
+                    }
                 }
             }
-            levels++;
+            if (rottedThisTurn)
+                levels++;
         }
-        return freshCount == 0 ? levels - 1 : -1;
+        return freshCount == 0 ? levels : -1;
     }
 }
