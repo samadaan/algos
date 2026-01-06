@@ -51,9 +51,9 @@ class Solution {
                 count++;
             }
         }
-        System.out.println(count);
+        // System.out.println(count);
         int edgeRequired = dsu.findUniqueParent() - 1;
-        System.out.println(edgeRequired);
+        // System.out.println(edgeRequired);
         if (count >= edgeRequired) {
             return edgeRequired;
         }
