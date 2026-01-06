@@ -2,66 +2,47 @@ class Solution {
     class DSU {
         int[] parent;
         int[] rank;
+        int components;
 
         public DSU(int n) {
             this.parent = new int[n];
             this.rank = new int[n];
-            for (int i = 0; i < n; i++) {
-                parent[i] = i;
-                rank[i] = 1;
-            }
+            this.components = n;
+            for (int i = 0; i < n; i++) parent[i] = i;
         }
 
-        public int find(int curr) {
-            if (parent[curr] == curr) {
-                return curr;
-            }
-            return parent[curr] = find(parent[curr]);
+        public int find(int i) {
+            if (parent[i] == i) return i;
+            return parent[i] = find(parent[i]);
         }
 
         public boolean union(int x, int y) {
-            int parx = find(x);
-            int pary = find(y);
-            if (parx == pary)
-                return false;
-            if (rank[parx] == rank[pary]) {
-                parent[pary] = parx;
-                rank[parx]++;
-
-            } else if (rank[parx] > rank[pary]) {
-                parent[pary] = parx;
-                // rank[parx]++;
-            } else {
-                parent[parx] = pary;
-                // rank[pary]++;
+            int rootX = find(x);
+            int rootY = find(y);
+            if (rootX == rootY) return false;
+            
+            // Union by Rank
+            if (rank[rootX] < rank[rootY]) parent[rootX] = rootY;
+            else if (rank[rootX] > rank[rootY]) parent[rootY] = rootX;
+            else {
+                parent[rootY] = rootX;
+                rank[rootX]++;
             }
+            components--; // Two components merged into one
             return true;
-        }
-
-        public int findUniqueParent() {
-            Set<Integer> set = new HashSet<>();
-            for (int i = 0; i < parent.length; i++) {
-                set.add(find(parent[i]));
-            }
-            return set.size();
         }
     }
 
     public int makeConnected(int n, int[][] connections) {
-        DSU dsu = new DSU(n);
-        int count = 0;
-        for (int[] conn : connections) {
-            if (!dsu.union(conn[0], conn[1])) {
-                count++;
-            }
-        }
-        // System.out.println(count);
-        int edgeRequired = dsu.findUniqueParent() - 1;
-        // System.out.println(edgeRequired);
-        if (count >= edgeRequired) {
-            return edgeRequired;
-        }
-        return -1;
+        // Condition: Total edges must be at least n-1
+        if (connections.length < n - 1) return -1;
 
+        DSU dsu = new DSU(n);
+        for (int[] conn : connections) {
+            dsu.union(conn[0], conn[1]);
+        }
+
+        // We need (number of components - 1) cables to connect them all
+        return dsu.components - 1;
     }
 }
