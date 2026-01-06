@@ -24,12 +24,16 @@ class Solution {
             int pary = find(y);
             if (parx == pary)
                 return false;
-            if (rank[parx] >= rank[pary]) {
+            if (rank[parx] == rank[pary]) {
                 parent[pary] = parx;
                 rank[parx]++;
+
+            } else if (rank[parx] > rank[pary]) {
+                parent[pary] = parx;
+                // rank[parx]++;
             } else {
                 parent[parx] = pary;
-                rank[pary]++;
+                // rank[pary]++;
             }
             return true;
         }
