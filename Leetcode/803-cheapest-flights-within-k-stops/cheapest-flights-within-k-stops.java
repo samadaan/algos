@@ -10,43 +10,36 @@ class Solution {
     }
 
     public int findCheapestPrice(int n, int[][] flights, int src, int dst, int k) {
-
-        List<Pair>[] adj = new ArrayList[n];
-        for (int i = 0; i < n; i++)
-            adj[i] = new ArrayList<>();
-
         int[] dist = new int[n];
         Arrays.fill(dist, Integer.MAX_VALUE);
         dist[src] = 0;
 
+        List<Pair>[] adjList = new ArrayList[n];
+        for (int i = 0; i < n; i++)
+            adjList[i] = new ArrayList<>();
         for (int[] f : flights) {
-            adj[f[0]].add(new Pair(f[1], f[2]));
+            adjList[f[0]].add(new Pair(f[1], f[2]));
         }
 
-        Queue<Pair> queue = new LinkedList<>();
-        queue.add(new Pair(src, 0));
-        int count = 0;
-        while (!queue.isEmpty() && count<=k) {
-            int size = queue.size();
-            while (size-- > 0) {
-                Pair p = queue.remove();
-                int u=p.node;
-                int w=p.weight;
-                for (Pair a : adj[p.node]) {
-                    int v=a.node;
-                    int z=a.weight;
-                    if (w + z < dist[v]) {
-                        dist[v] = w + z;
-                        queue.add(new Pair(v, dist[v]));
+        for (int i = 0; i <= k; i++) {
+            int[] arr=Arrays.copyOf(dist, dist.length);
+            for (int j = 0; j < n; j++) {
+                if (dist[j] != Integer.MAX_VALUE) {
+                    // System.out.println("Processing "+j);
+                    int currDist = dist[j];
+                    for (Pair p : adjList[j]) {
+                        int diff = p.weight;
+                        int newNode = p.node;
+                        if (dist[newNode] > currDist + diff) {
+                            arr[newNode] = Math.min(arr[newNode], currDist + diff);
+                            // System.out.println(newNode+" "+dist[newNode]);
+                        }
                     }
                 }
             }
-            count++;
+            dist=arr;
         }
-        if (dist[dst] == Integer.MAX_VALUE) {
-            return -1;
-        }
-        return dist[dst];
+        return dist[dst] == Integer.MAX_VALUE ? -1 : dist[dst];
 
     }
 }
