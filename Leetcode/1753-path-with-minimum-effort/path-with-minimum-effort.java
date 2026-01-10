@@ -1,37 +1,45 @@
 class Solution {
-    int[][] dirs = { { 1, 0 }, { -1, 0 }, { 0, 1 }, { 0, -1 } };
+    int[][] dirs = {{1, 0}, {-1, 0}, {0, 1}, {0, -1}};
 
     public int minimumEffortPath(int[][] heights) {
         int n = heights.length;
         int m = heights[0].length;
-        if(n==1 && m==1)return 0;
-        PriorityQueue<int[]> pq = new PriorityQueue<>((p,q)->p[2]-q[2]);
-        pq.add(new int[] { 0, 0, Integer.MIN_VALUE });
-        boolean[][] visited=new boolean[n][m];
-        visited[0][0]=true;
-        int ans = Integer.MAX_VALUE;
+        
+        // dist[i][j] stores the minimum effort required to reach cell (i, j)
+        int[][] dist = new int[n][m];
+        for (int[] row : dist) Arrays.fill(row, Integer.MAX_VALUE);
+        
+        // Priority Queue stores {row, col, effort}
+        PriorityQueue<int[]> pq = new PriorityQueue<>((a, b) -> a[2] - b[2]);
+        
+        dist[0][0] = 0;
+        pq.add(new int[]{0, 0, 0});
+        
         while (!pq.isEmpty()) {
-            int[] a = pq.poll();
-            if (a[0] == n - 1 && a[1] == m - 1) {
-                ans = Math.min(ans, a[2]);
-                continue;
-            }
-            visited[a[0]][a[1]]=true;
-            for (int[] dir : dirs) {
-                int nx = a[0] + dir[0];
-                int ny = a[1] + dir[1];
-                if (isValid(nx, ny, n, m) && !visited[nx][ny]) {
-                    int diff = Math.abs(heights[nx][ny] - heights[a[0]][a[1]]);
-                    int maxDiff = Math.max(diff, a[2]);
-                    pq.add(new int[] { nx, ny, maxDiff });
+            int[] curr = pq.poll();
+            int r = curr[0], c = curr[1], effort = curr[2];
+            
+            // If we found a better way to this cell already, skip
+            if (effort > dist[r][c]) continue;
+            
+            // If we reached the end, this is the minimum effort due to PQ property
+            if (r == n - 1 && c == m - 1) return effort;
+            
+            for (int[] d : dirs) {
+                int nr = r + d[0], nc = c + d[1];
+                
+                if (nr >= 0 && nr < n && nc >= 0 && nc < m) {
+                    // Effort to move to neighbor is the max of 
+                    // current path effort and the current step's jump
+                    int newEffort = Math.max(effort, Math.abs(heights[r][c] - heights[nr][nc]));
+                    
+                    if (newEffort < dist[nr][nc]) {
+                        dist[nr][nc] = newEffort;
+                        pq.add(new int[]{nr, nc, newEffort});
+                    }
                 }
             }
         }
-        return ans;
-
-    }
-
-    private boolean isValid(int i, int j, int rows, int cols) {
-        return i >= 0 && i < rows && j >= 0 && j < cols;
+        return 0;
     }
 }
