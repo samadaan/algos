@@ -1,33 +1,25 @@
 class Solution {
-    Set<String> words;
-    Map<String, Boolean> map;
-
+    Boolean[] memo;
+    Set<String> set;
     public boolean wordBreak(String s, List<String> wordDict) {
-        words = new HashSet<>(wordDict);
-        map = new HashMap<>();
-        return rec(s);
+        set=new HashSet<>(wordDict);
+        memo=new Boolean[s.length()];
+        return rec(s, 0);
 
+        
     }
+    public boolean rec(String s, int start){
+        // System.out.println(s+" "+start);
+        if(start==s.length())return true;
 
-    boolean rec(String s) {
-        if (s.length() == 0)
-            return true;
+        if(memo[start]!=null)return memo[start];
 
-        if (map.containsKey(s))
-            return map.get(s);
-
-        if (words.contains(s))
-            return true;
-
-        for (int i = 1; i <= s.length(); i++) {
-
-            if (words.contains(s.substring(0, i)) && rec(s.substring(i))) {
-                map.put(s, true);
-                return true;
+        for(int i=start+1; i<=s.length();i++){
+            // System.out.println(i);
+            if(set.contains(s.substring(start, i)) && rec(s, i)){
+                return memo[start]=true;
             }
-
         }
-        map.put(s, false);
-        return false;
+        return memo[start]=false;
     }
 }
