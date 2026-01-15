@@ -12,14 +12,14 @@ class Solution {
         // if(n==1)return dp[0][0];
         for(int len=2;len<=n;len++){
             for(int i=0;i<=n-len;i++){
-                int j=i+len;
-                if(words.contains(s.substring(i, j))){
-                    dp[i][j-1]=true;
+                int j=i+len-1;
+                if(words.contains(s.substring(i, j+1))){
+                    dp[i][j]=true;
                     continue;
                 }
-                for(int x=i;x<j-1;x++){
-                    if(dp[i][x] && dp[x+1][j-1]){
-                        dp[i][j-1]=true;
+                for(int x=i;x<j;x++){
+                    if(dp[i][x] && dp[x+1][j]){
+                        dp[i][j]=true;
                         continue;
                     }
                 }
