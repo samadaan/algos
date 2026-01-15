@@ -1,22 +1,27 @@
 class Solution {
-    static int[] dp;
+    int[][] dp;
+
     public int rob(int[] nums) {
-        if(nums.length==1)return nums[0];
-        dp=new int[nums.length];
-        dp[nums.length-1]=nums[nums.length-1];
-        dp[nums.length-2]=Math.max(nums[nums.length-1], nums[nums.length-2]);
-        for(int i=nums.length-3; i>=0;i--){
-            dp[i]=Math.max(dp[i+1], nums[i]+dp[i+2]);
+        dp = new int[nums.length][2];
+        for (int i = 0; i < nums.length; i++) {
+            dp[i][0] = -1;
+            dp[i][1] = -1;
         }
-        return dp[0];
+        return rec(nums, 0, 1);
+
     }
-    // public int recurse(int[] nums, int currIndex){
-    //     if(currIndex>=nums.length)return 0;
-    //     if(dp[currIndex]!=-1)return dp[currIndex];
-    //     int taken=nums[currIndex]+recurse(nums,currIndex+2);
-    //     int notTaken=recurse(nums,currIndex+1);
-    //     dp[currIndex] = Math.max(taken, notTaken);
-    //     return dp[currIndex];
-        
-    // }
+
+    int rec(int[] nums, int currIndex, int canChoose) {
+        if (currIndex >= nums.length)
+            return 0;
+        if (dp[currIndex][canChoose] != -1)
+            return dp[currIndex][canChoose];
+        if (canChoose == 1) {
+            int val1 = nums[currIndex] + rec(nums, currIndex + 1, 0);
+            int val2 = rec(nums, currIndex + 1, 1);
+            return dp[currIndex][canChoose] = Math.max(val1, val2);
+        }
+        return dp[currIndex][canChoose] = rec(nums, currIndex + 1, 1);
+
+    }
 }
