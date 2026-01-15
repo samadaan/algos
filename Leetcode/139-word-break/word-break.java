@@ -1,60 +1,30 @@
 class Solution {
     Set<String> words;
-    Map<String, Boolean> dp;
-    String str;
+    Map<String, Boolean> map;
+
     public boolean wordBreak(String s, List<String> wordDict) {
-        words=new HashSet<>(wordDict);
-        int n=s.length();
-        boolean[][] dp=new boolean[n][n];
-        for(int i=0;i<n;i++){
-            if(words.contains(s.substring(i, i+1)))dp[i][i]=true;
-        }
-        // if(n==1)return dp[0][0];
-        for(int len=2;len<=n;len++){
-            for(int i=0;i<=n-len;i++){
-                int j=i+len-1;
-                if(words.contains(s.substring(i, j+1))){
-                    dp[i][j]=true;
-                    continue;
-                }
-                for(int x=i;x<j;x++){
-                    if(dp[i][x] && dp[x+1][j]){
-                        dp[i][j]=true;
-                        break;
-                    }
-                }
-            }
-        }
-        // for(int i=0;i<n;i++){
-        //     for(int j=0;j<n;j++){
-        //         System.out.print(dp[i][j]+" ");
-        //     }
-        //     System.out.println();
-        // }
-        return dp[0][n-1];
+        words = new HashSet<>(wordDict);
+        map=new HashMap<>();
+        return rec(s);
+
     }
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    public boolean recur(int startIndex, int endIndex){
-        if(startIndex>endIndex)return false;
-        String x=str.substring(startIndex, endIndex);
-        if(dp.containsKey(x))return dp.get(x);
-        // System.out.println(x);
-        if(words.contains(x))return true;
-        for(int i=startIndex;i<endIndex;i++){
-            if(recur(startIndex, i) && recur(i, endIndex)){
-                dp.put(x, true);
+
+    boolean rec(String s){
+        if(s.length()==0)return true;
+
+        if(map.containsKey(s))return map.get(s);
+
+        if(words.contains(s))return true;
+
+        for(int i=1;i<=s.length();i++){
+            
+            if(words.contains(s.substring(0, i)) && rec(s.substring(i))){
+                map.put(s, true);
                 return true;
             }
+
         }
-        dp.put(x, false);
+        map.put(s, false);
         return false;
     }
 }
