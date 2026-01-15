@@ -20,7 +20,7 @@ class Solution {
                 for(int x=i;x<j;x++){
                     if(dp[i][x] && dp[x+1][j]){
                         dp[i][j]=true;
-                        continue;
+                        break;
                     }
                 }
             }
