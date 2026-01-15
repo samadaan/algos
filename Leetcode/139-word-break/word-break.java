@@ -1,51 +1,26 @@
 class Solution {
     Set<String> words;
+    Map<String, Boolean> dp;
+    String str;
     public boolean wordBreak(String s, List<String> wordDict) {
         words=new HashSet<>(wordDict);
-        //return recurse(0, words, s);
-        // int[] dp=new int[s.length()];
-        // Arrays.fill(dp,-1);
-        // return memoization(dp, 0, words, s);
-        return tabulate(words, s);
-        
+        str=s;
+        dp=new HashMap<>();
+        return recur(0, str.length());
     }
-    public boolean recurse(int currIndex, Set<String> words, String s){
-        if(currIndex==s.length())return true;
-        for(int j=currIndex+1; j<=s.length(); j++){
-            if(words.contains(s.substring(currIndex, j)) && recurse(j, words, s)){
+    public boolean recur(int startIndex, int endIndex){
+        if(startIndex>endIndex)return false;
+        String x=str.substring(startIndex, endIndex);
+        if(dp.containsKey(x))return dp.get(x);
+        // System.out.println(x);
+        if(words.contains(x))return true;
+        for(int i=startIndex;i<endIndex;i++){
+            if(recur(startIndex, i) && recur(i, endIndex)){
+                dp.put(x, true);
                 return true;
             }
         }
+        dp.put(x, false);
         return false;
-    }
-    public boolean memoization(int[] dp, int currIndex, Set<String> words, String s){
-        if(currIndex==s.length())return true;
-        if(dp[currIndex]!=-1){
-            if(dp[currIndex]==1)return true;
-            return false;
-        }
-        for(int j=currIndex+1; j<=s.length(); j++){
-            if(words.contains(s.substring(currIndex, j)) && memoization(dp, j, words, s)){
-                dp[currIndex]=1;
-                return true;
-            }
-        }
-        dp[currIndex]=0;
-        return false;
-    }
-
-    public boolean tabulate(Set<String> words, String s){
-        int n=s.length();
-        boolean[] dp=new boolean[s.length()+1];
-        dp[n]=true;
-        for(int i=n-1;i>=0;i--){
-            for(int j=i+1;j<=n;j++){
-                if(words.contains(s.substring(i,j)) && dp[j]){
-                    dp[i]=true;
-                    break;
-                }
-            }
-        }
-        return dp[0];
     }
 }
