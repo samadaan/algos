@@ -4,10 +4,44 @@ class Solution {
     String str;
     public boolean wordBreak(String s, List<String> wordDict) {
         words=new HashSet<>(wordDict);
-        str=s;
-        dp=new HashMap<>();
-        return recur(0, str.length());
+        int n=s.length();
+        boolean[][] dp=new boolean[n][n];
+        for(int i=0;i<n;i++){
+            if(words.contains(s.substring(i, i+1)))dp[i][i]=true;
+        }
+        // if(n==1)return dp[0][0];
+        for(int len=2;len<=n;len++){
+            for(int i=0;i<=n-len;i++){
+                int j=i+len;
+                if(words.contains(s.substring(i, j))){
+                    dp[i][j-1]=true;
+                    continue;
+                }
+                for(int x=i;x<j-1;x++){
+                    if(dp[i][x] && dp[x+1][j-1]){
+                        dp[i][j-1]=true;
+                        continue;
+                    }
+                }
+            }
+        }
+        // for(int i=0;i<n;i++){
+        //     for(int j=0;j<n;j++){
+        //         System.out.print(dp[i][j]+" ");
+        //     }
+        //     System.out.println();
+        // }
+        return dp[0][n-1];
     }
+    
+    
+    
+    
+    
+    
+    
+    
+    
     public boolean recur(int startIndex, int endIndex){
         if(startIndex>endIndex)return false;
         String x=str.substring(startIndex, endIndex);
