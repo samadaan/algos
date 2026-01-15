@@ -22,13 +22,13 @@ class Solution {
         // ndp[1][1]=nums[n];
         int canChoose=nums[n];
         int canNotChoose=0;
-
+        int v1;
+        int v2;
         for(int i=n-1;i>=0;i--){
-            int canNotChoose1=canChoose;
-            int canChoose1=Math.max(nums[i]+canNotChoose, canChoose);
-            // System.out.println("i "+i+" canNotChoose1 "+ canNotChoose1+" canChoose1 "+canChoose1);
-            canChoose=canChoose1;
-            canNotChoose=canNotChoose1;
+            v1=canChoose;
+            v2=Math.max(nums[i]+canNotChoose, canChoose);
+            canChoose=v2;
+            canNotChoose=v1;
         }
         return canChoose;
 
