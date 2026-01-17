@@ -20,7 +20,7 @@ class Solution {
                 if (y >= 0 && y < prevRow.size()) {
                     val += prevRow.get(y);
                 }
-                currRow.add(x, val);
+                currRow.add(val);
             }
         }
         return ans;
