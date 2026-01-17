@@ -9,11 +9,11 @@ class Solution {
 
         int sell=prices[prices.length-1];
         int buy=0;
+        int newsell;
         for(int j=prices.length-2;j>=0;j--){
-            int newsell=Math.max(prices[j], sell);
-            int newbuy=Math.max(-prices[j]+sell, buy);
+            newsell=Math.max(prices[j], sell);
+            buy=Math.max(-prices[j]+sell, buy);
             sell=newsell;
-            buy=newbuy;
         }
         return buy;
 
