@@ -1,27 +1,19 @@
 class Solution {
-    int[] n;
-    int len;
-    Integer[][] memo;
-
     public int lengthOfLIS(int[] nums) {
-        n = nums;
-        len = nums.length;
-        memo = new Integer[nums.length][nums.length + 1];
-        return recur(0, -1);
 
-    }
+        int[] dp=new int[nums.length];
+        Arrays.fill(dp, 1);
+        int maxLen=1;
 
-    public int recur(int index, int prevIndex) {
-        if (index >= len) {
-            return 0;
+        for(int i=nums.length-2;i>=0;i--){
+            for(int j=i+1;j<nums.length;j++){
+                    if(nums[i]<nums[j]){
+                        dp[i]=Math.max(dp[i], 1+dp[j]);
+                    }
+            }
+            maxLen=Math.max(maxLen, dp[i]);
         }
-        if (memo[index][prevIndex + 1] != null) {
-            return memo[index][prevIndex + 1];
-        }
-        int len = recur(index + 1, prevIndex);
-        if (prevIndex == -1 || n[index] > n[prevIndex]) {
-            len = Math.max(len, 1 + recur(index + 1, index));
-        }
-        return memo[index][prevIndex + 1] = len;
+        return maxLen;
+        
     }
 }
