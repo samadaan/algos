@@ -3,9 +3,19 @@ class Solution {
     Integer[][] dp;
 
     public int maxProfit(int[] prices) {
-        arr = prices;
-        dp = new Integer[prices.length][2];
-        return recur(0, 1);
+        // arr = prices;
+        // dp = new Integer[prices.length][2];
+        // return recur(0, 1);
+
+        int sell=prices[prices.length-1];
+        int buy=0;
+        for(int j=prices.length-2;j>=0;j--){
+            int newsell=Math.max(prices[j], sell);
+            int newbuy=Math.max(-prices[j]+sell, buy);
+            sell=newsell;
+            buy=newbuy;
+        }
+        return buy;
 
     }
 
