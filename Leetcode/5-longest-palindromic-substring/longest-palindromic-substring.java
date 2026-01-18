@@ -4,18 +4,39 @@ class Solution {
     int[][] memo;
 
     public String longestPalindrome(String s) {
-        maxLen = 0;
-        ans = "";
-        memo = new int[s.length()][s.length()];
-        for (int i = 0; i < s.length(); i++) {
-            for (int j = 0; j < s.length(); j++) {
-                memo[i][j] = -1;
+        // maxLen = 0;
+        // ans = "";
+        // memo = new int[s.length()][s.length()];
+        // for (int i = 0; i < s.length(); i++) {
+        //     for (int j = 0; j < s.length(); j++) {
+        //         memo[i][j] = -1;
+        //     }
+        // }
+        // recur(0, s.length() - 1, s);
+        // return ans;
+        if(s.isEmpty())return "";
+        int maxLen=0;
+        String ans=s.substring(0,1);
+        int[][] dp=new int[s.length()][s.length()];
+        for(int i=0;i<s.length();i++){
+            dp[i][i]=1;
+        }
+        for(int len=2;len<=s.length();len++){
+            for(int i=0;i<=s.length()-len;i++){
+                int j=i+len-1;
+                if(s.charAt(i)==s.charAt(j) && isPalindrome(s, i, j)){
+                    if(j-i+1>maxLen){
+                        maxLen=j-i+1;
+                        ans=s.substring(i, j+1);
+                    }
+                    dp[i][j]=j-i+1;
+                }else{
+                    dp[i][j]=Math.max(dp[i+1][j], dp[i][j-1]);
+                }
             }
         }
-        recur(0, s.length() - 1, s);
         return ans;
     }
-
     public int recur(int startIndex, int endIndex, String s) {
         if (startIndex >= s.length() || endIndex >= s.length() || startIndex < 0 || endIndex < 0)
             return 0;
