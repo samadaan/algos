@@ -1,16 +1,13 @@
 class Solution {
     Boolean memo[];
     public boolean canJump(int[] nums) {
-        boolean[] dp=new boolean[nums.length];
-        dp[nums.length-1]=true;
         int reach=nums.length-1;
         for(int i=nums.length-2;i>=0;i--){
             if(i+nums[i]>=reach){
                 reach=i;
-                dp[i]=true;
             }
         }
-        return dp[0];
+        return reach==0;
     }
     // O(n^2)
     boolean recur(int index, int[] nums){
