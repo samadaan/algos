@@ -1,40 +1,31 @@
 class Solution {
-    String s1;
-    String s2;
+    int[][] memo;
     public int minDistance(String word1, String word2) {
-        s1=word1;
-        s2=word2;
-        // return recurse(word1.length()-1, word2.length()-1);
-        return tabulation();
-    }
-    public int recurse(int i, int j){
-        if(i<0 || j<0){
-            if(i<0)return j+1;
-            return i+1;
+        memo=new int[word1.length()][word2.length()];
+        for(int[] arr : memo){
+            Arrays.fill(arr, -1);
         }
-        if(s1.charAt(i)==s2.charAt(j)){
-            return recurse(i-1, j-1);
-        }
-        return   1+ Math.min(recurse(i-1, j-1), Math.min(recurse(i, j-1), recurse(i-1, j)));
+        return recur(0, 0, word1, word2);
     }
 
-    public int tabulation(){
-        int[] prev=new int[s2.length()+1];
-        for(int i=0;i<=s2.length();i++){
-            prev[i]=i;
-        }
-        for(int i=1;i<=s1.length();i++){
-            int[] curr=new int[s2.length()+1];
-            curr[0]=i;
-            for(int j=1;j<=s2.length();j++){
-                if(s1.charAt(i-1)==s2.charAt(j-1)){
-                    curr[j]=prev[j-1];
-                }else{
-                    curr[j]=1+Math.min(prev[j-1], Math.min(prev[j], curr[j-1]));
-                }
-            }
-            prev=curr;
-        }
-        return prev[s2.length()];
+    int recur(int sIndex, int dIndex, String word1, String word2) {
+        if (sIndex == word1.length() && dIndex == word2.length())
+            return 0;
+        if (sIndex == word1.length())
+            return word2.length() - dIndex;
+        if (dIndex == word2.length())
+            return word1.length() - sIndex;
+        if(memo[sIndex][dIndex]!=-1)
+            return memo[sIndex][dIndex];
+        if (word1.charAt(sIndex) == word2.charAt(dIndex))
+            return memo[sIndex][dIndex] = recur(sIndex + 1, dIndex + 1, word1, word2);
+        // Insert
+        int val1 = recur(sIndex, dIndex + 1, word1, word2);
+        // Delete
+        int val2 = recur(sIndex + 1, dIndex, word1, word2);
+        // Replace
+        int val3 = recur(sIndex + 1, dIndex + 1, word1, word2);
+        int min = Math.min(val1, Math.min(val2, val3));
+        return memo[sIndex][dIndex] = 1 + min;
     }
 }
