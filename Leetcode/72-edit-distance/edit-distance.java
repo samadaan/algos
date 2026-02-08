@@ -2,53 +2,28 @@ class Solution {
     int[][] memo;
 
     public int minDistance(String word1, String word2) {
-        if(word1.length()==0 || word2.length()==0){
-            return Math.max(word1.length(), word2.length());
-        }
-        memo = new int[word1.length()][word2.length()];
-        // for (int[] arr : memo) {
-        //     Arrays.fill(arr, -1);
-        // }
-        int prevValue = 0;
-        boolean used=false;
-        for (int i = word1.length() - 1; i >= 0; i--) {
-            if (used || (word1.charAt(i) != word2.charAt(word2.length() - 1))) {
-                prevValue++;
-            }else{
-                used=true;
-            }
-            memo[i][word2.length() - 1] = prevValue;
-        }
-        used=false;
-        prevValue = 0;
-        for (int i = word2.length() - 1; i >= 0; i--) {
-            if(used || (word2.charAt(i) != word1.charAt(word1.length() - 1))){
-                prevValue++;
-            }else{
-                used=true;
-            }
-            memo[word1.length() - 1][i] = prevValue;
-        
-        }
-        for (int sIndex = word1.length() - 2; sIndex >= 0; sIndex--) {
-            for (int dIndex = word2.length() - 2; dIndex >= 0; dIndex--) {
-                if (word1.charAt(sIndex) == word2.charAt(dIndex)) {
-                    memo[sIndex][dIndex] = memo[sIndex + 1][dIndex + 1];
+        int m = word1.length();
+        int n = word2.length();
+        int[][] dp = new int[m + 1][n + 1];
+
+        // Base cases: distance between string and empty string
+        for (int i = 0; i <= m; i++)
+            dp[i][0] = i;
+        for (int j = 0; j <= n; j++)
+            dp[0][j] = j;
+
+        for (int i = 1; i <= m; i++) {
+            for (int j = 1; j <= n; j++) {
+                if (word1.charAt(i - 1) == word2.charAt(j - 1)) {
+                    dp[i][j] = dp[i - 1][j - 1];
                 } else {
-                    int minVal = Math.min(memo[sIndex][dIndex + 1],
-                            Math.min(memo[sIndex + 1][dIndex], memo[sIndex + 1][dIndex + 1]));
-                    memo[sIndex][dIndex] = 1 + minVal;
+                    // Min of (Insert, Delete, Replace) + 1
+                    dp[i][j] = 1 + Math.min(dp[i][j - 1],
+                            Math.min(dp[i - 1][j], dp[i - 1][j - 1]));
                 }
             }
         }
-        // for(int i=0;i<word1.length();i++){
-        //     for(int j=0;j<word2.length();j++){
-        //         System.out.print(memo[i][j]+" ");
-        //     }
-        //     System.out.println();
-        // }
-        return memo[0][0];
-        // return recur(0, 0, word1, word2);
+        return dp[m][n];
     }
 
     int recur(int sIndex, int dIndex, String word1, String word2) {
